@@ -23,7 +23,6 @@
 
 - **250× fewer sampling steps** than diffusion models (4 NFEs vs. 1,000)
 - **Stable quality** across NFE range [4, 1000] (SSIM fluctuation < ±0.003)
-- **Robust to noise**: only 25–30% degradation at extreme SNR compared to competing methods
 
 ---
 
@@ -46,7 +45,6 @@
 | `model.py` | RectifiedFlow sampler & schedulers |
 | `unet.py` | U-Net backbone (UnetConcat) with seismic conditioning |
 | `ssim_improments.py` | ImprovedSeisEncoder, TimePooling, SpatialAttention, LearningRateController, ConvSeisAligner |
-| `noise.py` | 14 types of seismic noise simulation |
 | `train_1.py` | Training script (CFB dataset) |
 | `test_ssim.py` | Evaluation script with SSIM/MAE/RMSE metrics |
 | `requirements` | Python dependencies |
@@ -62,7 +60,6 @@
 | `model.py` | RectifiedFlow sampler with LogitNormalCosine and Linear schedulers. Implements ODE integration with optional median correction. |
 | `unet.py` | Modified U-Net that conditions on seismic data via GatedSeisFusion at each encoder/decoder level. Uses ConvSeisAligner for spatial alignment and EnhancedTimeMLP for time embeddings. |
 | `ssim_improments.py` | Seismic encoder with Conv1d temporal processing, learnable time pooling, spatial attention, and multi-source fusion. Also includes the LearningRateController with cosine annealing and warm-restart. |
-| `noise.py` | Comprehensive noise simulation toolkit supporting 14 noise types for robust testing. |
 | `train_1.py` | End-to-end training pipeline with Comet ML logging, EMA updates, mixed-precision training, and periodic evaluation. |
 | `test_ssim.py` | Evaluation script computing SSIM, MAE, and RMSE metrics with visualization of predictions, ground truth, and residuals. |
 
@@ -127,36 +124,6 @@ python test_ssim.py
 
 The script computes SSIM, MAE, and RMSE metrics and generates a visualization of predictions vs. ground truth.
 
-### Noise Simulation
-
-The `noise.py` module provides 14 types of seismic noise for robust testing:
-
-| # | Function | Description |
-|---|----------|-------------|
-| 1 | `add_gaussian_noise` | Gaussian white noise |
-| 2 | `add_uniform_noise` | Uniform distribution noise |
-| 3 | `add_surface_wave` | Surface wave (linear coherent) |
-| 4 | `add_ground_roll` | Ground roll (dispersive surface wave) |
-| 5 | `add_multiples` | Multiple reflections (periodic) |
-| 6 | `add_power_line_noise` | 50/60 Hz power line interference |
-| 7 | `add_harmonic_noise` | Harmonic interference |
-| 8 | `add_dead_traces` | Dead traces (zeroed channels) |
-| 9 | `add_noisy_traces` | Bad traces (high-noise channels) |
-| 10 | `add_spike_noise` | Spike/salt-and-pepper noise |
-| 11 | `add_band_limited_noise` | Band-limited random noise |
-| 12 | `add_low_freq_noise` | Low-frequency noise |
-| 13 | `add_correlated_noise` | Spatially correlated noise |
-| 14 | `add_realistic_field_noise` | Combined realistic field noise |
-
-All functions support both NumPy and PyTorch tensors with arbitrary batch shapes.
-
-Usage example:
-```python
-from noise import add_realistic_field_noise
-
-noisy_seis = add_realistic_field_noise(seis_data, snr_db=5)
-```
-
 ---
 
 ## Dataset
@@ -178,8 +145,6 @@ For dataset access, refer to the [OpenFWI website](https://openfwi-lanl.github.i
 2. **Improved Seismic Encoder** — Conv1d temporal processing with learnable time pooling and spatial attention for better seismic feature extraction.
 
 3. **Gated Seis Fusion** — Spatial gating mechanism that adaptively blends seismic conditioning with U-Net features at each resolution level.
-
-4. **Comprehensive Noise Simulation** — 14 noise types for rigorous robustness evaluation under realistic field conditions.
 
 ---
 
