@@ -29,7 +29,7 @@
 
 ## Architecture Overview
 
-![CRF-FWI Algorithm Pipeline](image算法流程图.png)
+![CRF-FWI Algorithm Pipeline](algorithm_pipeline.png)
 
 **RectifiedFlow Sampler** integrates ODE from noise to velocity model using the trained U-Net as a velocity field predictor.
 
@@ -37,7 +37,7 @@
 
 ## Sampling & Inversion Demo
 
-![CRF-FWI Sampling Demo](image采样展示图.png)
+![CRF-FWI Sampling Demo](sampling_demo.png)
 
 ## Project Structure
 
