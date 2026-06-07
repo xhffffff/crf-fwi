@@ -29,53 +29,31 @@
 
 ## Architecture Overview
 
-```
-Seismic Data (B, 5, 1000, 70)
-        │
-        ▼
-┌─────────────────────┐
-│ ImprovedSeisEncoder │  ← Conv1d time processing + Spatial Attention + Source Fusion
-└────────┬────────────┘
-         │
-         ▼
-┌──────────────────────────────────────────┐
-│           U-Net (UnetConcat)             │
-│  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐ │
-│  │Enc L0│→│Enc L1│→│Enc L2│→│Enc L3│ │
-│  └──┬───┘  └──┬───┘  └──┬───┘  └──┬───┘ │
-│     │   GatedSeisFusion at each level     │
-│  ┌──┴───┐  ┌──┴───┐  ┌──┴───┐  ┌──┴───┐ │
-│  │Dec L0│←│Dec L1│←│Dec L2│←│Dec L3│ │
-│  └──────┘  └──────┘  └──────┘  └──────┘ │
-└──────────────────┬───────────────────────┘
-                   │
-                   ▼
-           Velocity Model (B, 1, 70, 70)
-```
+![CRF-FWI Algorithm Pipeline](image算法流程图.png)
 
 **RectifiedFlow Sampler** integrates ODE from noise to velocity model using the trained U-Net as a velocity field predictor.
 
 ---
 
+## Sampling & Inversion Demo
+
+![CRF-FWI Sampling Demo](image采样展示图.png)
+
 ## Project Structure
 
-```
-rf/
-├── model.py                  # RectifiedFlow sampler & schedulers
-├── unet.py                   # U-Net backbone (UnetConcat) with seismic conditioning
-├── ssim_improments.py        # ImprovedSeisEncoder, TimePooling, SpatialAttention,
-│                               LearningRateController, ConvSeisAligner
-├── noise.py                  # 14 types of seismic noise simulation
-├── train_1.py                # Training script (CFB dataset)
-├── test_ssim.py              # Evaluation script with SSIM/MAE/RMSE metrics
-├── requirements              # Python dependencies
-├── utils/
-│   ├── OptimizedSeisDataset.py   # Efficient dataset loader with memory mapping
-│   ├── test_data_slicer.py       # Test data loading utilities
-│   ├── drop.py                   # DropPath (Stochastic Depth)
-│   └── __init__.py
-└── README.md
-```
+| File | Description |
+|------|-------------|
+| `model.py` | RectifiedFlow sampler & schedulers |
+| `unet.py` | U-Net backbone (UnetConcat) with seismic conditioning |
+| `ssim_improments.py` | ImprovedSeisEncoder, TimePooling, SpatialAttention, LearningRateController, ConvSeisAligner |
+| `noise.py` | 14 types of seismic noise simulation |
+| `train_1.py` | Training script (CFB dataset) |
+| `test_ssim.py` | Evaluation script with SSIM/MAE/RMSE metrics |
+| `requirements` | Python dependencies |
+| `utils/OptimizedSeisDataset.py` | Efficient dataset loader with memory mapping |
+| `utils/test_data_slicer.py` | Test data loading utilities |
+| `utils/drop.py` | DropPath (Stochastic Depth) |
+| `utils/__init__.py` | Package init |
 
 ### Core Components
 

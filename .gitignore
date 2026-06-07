@@ -43,7 +43,7 @@ data/
 *.png
 *.jpg
 *.jpeg
-!figures/paper_*.png
+!image*.png
 
 # Comet ML
 .cometml/
