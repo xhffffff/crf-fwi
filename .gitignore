@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Model weights (large files)
+*.pth
+*.pt
+*.ckpt
+!checkpoint/
+
+# Data files
+*.npy
+*.npz
+*.h5
+*.hdf5
+data/
+/openfwi/
+
+# Output / Results
+/results_openfwi/
+/images_openfwi/
+/checkpoint/
+*.png
+*.jpg
+*.jpeg
+!figures/paper_*.png
+
+# Comet ML
+.cometml/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
+
+# LaTeX / Paper build artifacts
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.pdf
+*.blg
+*.bbl
+*.toc
+*.lot
+*.lof
+temp_pdf/
+
+# Environment
+.env
+.env.local
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
